@@ -8,8 +8,7 @@ import fs from "fs"
         api_secret: CLOUDINARY_API_SECRET // Click 'View API Keys' above to copy your API secret
     });
 
- const uploadOneCloudinary=async(localFilePath)=>{
-    try{
+ const uploadOnCloudinary=async(localFilePath)=>{
         if(!localFilePath) return null
         // upload the file on cloudinary
         const response=await cloudinary.uploader.upload
@@ -29,4 +28,4 @@ import fs from "fs"
     }
 }
  
-export {uploadOneCloudinary};
+export {uploadOnCloudinary};
