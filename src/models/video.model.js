@@ -1,7 +1,5 @@
 import mongoose ,{Schema} from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-import jwt from "json webtoken";
-import bcrypt from "bcrypt";
 const videoSchema = new mongoose.Schema({
 videoFile:{
     type:String,// cloudinary url
