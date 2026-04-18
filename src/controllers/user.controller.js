@@ -14,53 +14,46 @@ const registerUser=asyncHandler(async(req,res)=>{
 // check for user creation 
 // return response
 
-     const {fullName,email,username,password}=req.body
+     const {fullname,email,username,password}=req.body
      console.log("email:",email);
      console.log("password:",password);
 
-     if (fullName===""){
-      throw new ApiError(400 ,"fullname is required")
-     }
-     if(email==""){
-          throw new ApiError(400,"email is required")
-     }
-     if(username=="")
-     {
-          throw new ApiError (400,"username is required")
-     }
-     if(password==""){
-          throw new ApiError (400,"password is required")
-     }
-   const existedUser=User.findOne({$or:[{username},{email}]})
+if (!fullname || !email || !username || !password) {
+    console.log({ fullname, email, username, password });
+    throw new ApiError(400, "All fields are required");
+}
+   const existedUser= await User.findOne({$or:[{username},{email}]})
    if(existedUser){
      throw new ApiError(409,"username  or email is already existed")
    }
+   console.log(req.files);
 
    const avatarLocalPath=req.files?.avatar[0]?.path;
   const coverImageLocalPath= req.files?.coverImage[0]?.path;
 
   if(!avatarLocalPath){
-     throw new ApiError(400,"Avatar file is required")
+     throw new ApiError(400,"Avatar local file is required")
   }
   const avatar=await uploadOnCloudinary (avatarLocalPath)
  const coverImage= await uploadOnCloudinary(coverImageLocalPath)
 
 if (!avatar){
-     throw new ApiError(400,"Avatar file is required")
+     throw new ApiError(400,"Avatar clodinary  file  is required")
 }
 
+
 const user= await User.create({
-     fullName,
-     avatar:avatar.url,
-     coverImage:coverImage?.url || "",
+     fullname,
+     avatar:avatar.secure_url,
+     coverImage:coverImage?.secure_url || "",
      email,
      password,
-     username:username.toLowerCase
+     username:username.toLowerCase()
 })
 const createduser=await User.findById(user._id).select(
      "-password -refreshToken"
 )
-if(createduser){
+if(!createduser){
      throw new ApiError(500,"something went wrong when user registring")
 }
 
