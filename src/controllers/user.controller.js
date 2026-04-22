@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 
 // make method for generate and access token
-const generateAccessAndRefershTokens=async(userId)=>{
+const generateAccessAndRefreshTokens=async(userId)=>{
      try{
  const user=await User.findById(userId)
   const accessToken=user.generateAccessToken()
@@ -104,8 +104,8 @@ const loginUser=asyncHandler(async(req,res)=>{
          throw new ApiError(404,"invalid credentials")
      }
      const {accessToken,refreshToken}=await
-     generateAccessAndRefershTokens(user._id)
- const loggedInUser=   User.findById(user._id).select("-password -refreshToken")
+     generateAccessAndRefreshTokens(user._id)
+ const loggedInUser=   await User.findById(user._id).select("-password -refreshToken")
      // send to cookies
 const options={
      httpOnly:true,
@@ -124,4 +124,8 @@ const options={
      )
  )
 })
-export {registerUser}  
+
+const logoutUser=asynchandler(async(req,res)=>{
+     
+})
+export {registerUser,loginUser}   
