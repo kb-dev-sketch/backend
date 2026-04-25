@@ -1,6 +1,20 @@
 
+
+
+
+const asyncHandler = (fn) => {
+  return async (req, res, next) => {
+    try {
+      await fn(req, res); // ✅ don't pass next
+    } catch (error) {
+      next(error); // ✅ controlled usage
+    }
+  };
+};
+
+export { asyncHandler }
 // wrapper function
-const asyncHandler=(requestHandler)=>{
+ /*const asyncHandler=(requestHandler)=>{
   return  (req,res,next)=>{
         Promise.resolve(requestHandler(req,res,next)).
         catch((error)=>next(error))
@@ -8,6 +22,7 @@ const asyncHandler=(requestHandler)=>{
 }
 
 export {asyncHandler};
+/*
 
 /*
 export {asyncHandler}

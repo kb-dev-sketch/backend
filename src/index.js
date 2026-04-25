@@ -4,7 +4,8 @@ dotenv.config({
   path:'./.env'
 })
 import app from "./app.js";
-
+console.log("ACCESS:", process.env.ACCESS_TOKEN_SECRET);
+console.log("REFRESH:", process.env.REFRESH_TOKEN_SECRET);
 connectDB()
 .then(()=>{
   app.listen(process.env.PORT || 8000,()=>{
