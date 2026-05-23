@@ -5,9 +5,9 @@
 const asyncHandler = (fn) => {
   return async (req, res, next) => {
     try {
-      await fn(req, res); // ✅ don't pass next
+      await fn(req, res, next);
     } catch (error) {
-      next(error); // ✅ controlled usage
+      next(error);
     }
   };
 };

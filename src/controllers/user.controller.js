@@ -3,18 +3,19 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../models/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 
 // make method for generate and access token
 
 const generateAccessAndRefreshTokens=async(userId)=>{
-     console.log("DEBUG userId 👉", userId);
-console.log("TYPE 👉", typeof userId);
+     console.log("DEBUG userId ", userId);
+console.log("TYPE", typeof userId);
      try{
  const user=await User.findById(userId);
- 
- 
+
+ if(!user){
+     throw new ApiError(404,"User not found")
+ }
   const accessToken=user.generateAccessToken();
  const refreshToken=user.generateRefreshToken();
  user.refreshToken=refreshToken;
